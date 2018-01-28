@@ -1,0 +1,2 @@
+[%service_name%]
+localhost ansible_connection=local

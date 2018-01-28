@@ -1,0 +1,24 @@
+FROM debian/jessie
+
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt-get clean && \
+    apt-get update -qy && apt-get install -qy --no-install-recommends \
+     apt-transport-https
+
+COPY deployment.tar.gz /opt/deployment.tar.gz
+RUN cd /opt && tar xvfz deployment.tar.gz
+
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+
+RUN mkdir -p /opt/test-config/group_vars
+COPY test-config/inventory /opt/test-config
+COPY test-config/%module_name% /opt/test-config/group_vars
+COPY ansible.cfg  /opt/ansible.cfg
+
+RUN cd /opt/ && ansible-playbook -i test-config -c local playbooks/test.yml --check --diff -vv && \
+     echo "running ansible_check_mode=false" && \
+     ansible-playbook -i test-config -c local playbooks/test.yml
+
+RUN chmod +x /docker-entrypoint.sh
+ENTRYPOINT ["/docker-entrypoint.sh"]
+

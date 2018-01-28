@@ -1,0 +1,6 @@
+---
+- name: Configure %SERVICE_NAME%
+  hosts: %service_name%
+  become: yes
+  roles:
+    - TO BE DEFINED

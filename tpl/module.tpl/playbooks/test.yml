@@ -1,0 +1,7 @@
+---
+- name: Configure %module_name%
+  hosts: localhost
+  become: yes
+  roles:
+    - %module_name%
+

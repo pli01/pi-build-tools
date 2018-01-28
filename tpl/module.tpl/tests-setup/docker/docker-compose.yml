@@ -1,0 +1,9 @@
+version: '2'
+
+# define services
+services:
+  %module_name%:
+    image: %module_name%:latest
+    entrypoint: /docker-entrypoint.sh %module_name%
+#    links:
+#      - required docker service (if necessary)

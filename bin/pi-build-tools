@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ $# -lt 2 ] && [ $1 != "help" ];then
+	echo "at least one parameter is required"
+fi
+
+export PI_BUILD_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/.."
+export PI_BUILD_SCRIPT_TEMPLATE_DIR="$PI_BUILD_SCRIPT_DIR/tpl"
+
+source $PI_BUILD_SCRIPT_DIR/bin/imports
+
+if [ ! -f "$PI_BUILD_SCRIPT_DIR/bin/$1.sh" ]; then
+	echo "$1 is not a valid command"
+	exit 1;
+fi
+
+$PI_BUILD_SCRIPT_DIR/bin/$1.sh "${@:2}"
